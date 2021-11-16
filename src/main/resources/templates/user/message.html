@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="layout/header::userHead"></head>
+<body>
+<div th:replace="layout/top::header"></div>
+<div class="container">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            대시보드
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/message">
+                            메세지
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/myPage">
+                            마이페이지
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="col-md-10">
+            <H1 style="text-align: center">MESSAGE</H1>
+        </div>
+    </div>
+
+
+</div>
+
+<div th:replace="layout/footer::footer"></div>
+<script th:src="@{/js/jquery.min.js}"></script>
+</body>
+</html>
