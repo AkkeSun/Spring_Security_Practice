@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="layout/header::userHead"></head>
 <body>
@@ -27,30 +27,15 @@
                 </ul>
             </div>
         </nav>
-        <div class="col-md-10">
-            <H1 style="text-align: center">HOME</H1>
+        <div class="text-center col-md-10">
+            <h1><span th:text="${username}" class="alert alert-danger"/></h1>
+            <br>
+            <h3 th:text="${exception}"></h3>
         </div>
     </div>
-</div>
 
-<div th:replace="layout/footer::footer"></div>
-<script th:src="@{/js/jquery.min.js}"></script>
-<script>
-    $('#list').click(function () {
-        $.ajax({
-            url: "http://localhost:8080/api/boards",
-            type: "GET",
-            contentType: "application/json",
-            dataType: "json",
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (e) {
-                alert(e.responseText);
-                console.log(e);
-            }
-        });
-    });
-</script>
+
+
+</div>
 </body>
 </html>

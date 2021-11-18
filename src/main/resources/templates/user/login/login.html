@@ -5,13 +5,40 @@
 <body>
 <div th:replace="layout/top::header"></div>
 <div class="container">
-    <div class="text-center login-form">
-        <div class="col-sm-5">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">
+                            대시보드
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/message">
+                            메세지
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/myPage">
+                            마이페이지
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="col-md-10 text-center login-form">
+            <br>
             <div class="panel">
                 <p>아이디와 비밀번호를 입력해주세요</p>
             </div>
+
+            <div th:if="${error}" class="form-group">
+                <span th:text="${exception}" class="alert alert-danger"/>
+            </div>
+
             <form th:action="@{/login_proc}" class="form-signin" method="post">
-<!--            <form name="frm" id="frm" action="#" method="post" onsubmit="return false" class="form-signin">-->
+                <input th:type="hidden" th:value="secret" th:name="secretKey"> <!-- WebAuthenticationDetails -->
                 <div class="form-group">
                     <input type="text" class="form-control" name="username" placeholder="아이디" required="required"
                            autofocus="autofocus">
@@ -27,6 +54,7 @@
             </form>
         </div>
     </div>
+
 </div>
 </body>
 </html>
