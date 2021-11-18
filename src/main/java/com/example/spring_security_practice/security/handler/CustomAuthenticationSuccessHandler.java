@@ -18,7 +18,6 @@ import java.io.IOException;
  * SimpleUrlAuthenticationSuccessHandler
  * login 성공 시 실행되는 handler
  */
-@Component
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private RequestCache requestCache = new HttpSessionRequestCache();

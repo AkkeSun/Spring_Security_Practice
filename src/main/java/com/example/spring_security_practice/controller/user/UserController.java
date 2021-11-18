@@ -24,10 +24,6 @@ public class UserController {
         return "user/myPage";
     }
 
-    @GetMapping("/message")
-    public String message() throws Exception{
-        return "user/message";
-    }
 
     @GetMapping("/users")
     public String createUser(Model model) {
