@@ -42,10 +42,9 @@ public class AjaxSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         //============ 인증 (ajax 필터) ============
+
         http
                 .addFilterBefore(ajaxLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class); // 기존 필터 앞에 위치하도록
-        http.csrf().disable();
-
 
 
         //============ 에러처리 ============
@@ -56,8 +55,8 @@ public class AjaxSecurityConfig extends WebSecurityConfigurerAdapter {
         ;
 
 
-
     }
+
 
     @Override
     //============ Filter 커스텀을 위한 매니저 가져오기 ============

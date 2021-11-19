@@ -50,10 +50,14 @@ public class AjaxLoginProcessingFilter extends AbstractAuthenticationProcessingF
         return getAuthenticationManager().authenticate(authenticationToken);
     }
 
-    // ajax 요청시 header에 X-Requested-with : XMLHttpRequest 를 가져온다면 ajax로 간주
+    // ajax 요청은 header에 X-Requested-with : XMLHttpRequest 을 실어보낸다
     private boolean isAjax(HttpServletRequest request) {
         if("XMLHttpRequest".equals(request.getHeader("X-Requested-with")))
             return true;
         return false;
+    }
+
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 }

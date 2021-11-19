@@ -34,23 +34,5 @@
 </div>
 
 <div th:replace="layout/footer::footer"></div>
-<script th:src="@{/js/jquery.min.js}"></script>
-<script>
-    $('#list').click(function () {
-        $.ajax({
-            url: "http://localhost:8080/api/boards",
-            type: "GET",
-            contentType: "application/json",
-            dataType: "json",
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (e) {
-                alert(e.responseText);
-                console.log(e);
-            }
-        });
-    });
-</script>
 </body>
 </html>

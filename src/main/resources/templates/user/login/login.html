@@ -1,7 +1,52 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!--
+[== CSRF Token ==]
+서버에 들어온 요청이 실제 서버에서 허용한 요청이 맞는지 확인하기 위한 토큰
+뷰 페이지를 발행할 때 랜덤으로 생성된 Token을 같이 준 뒤 사용자 세션에 저장
+Spring Security는 기본적으로 CSRF방어를 지원하며
+post, put, delete 요청시 CSRF Token과 CSFR Header를 실어 보내야한다
+-->
+
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
 <head th:replace="layout/header::userHead"></head>
+
+<script>
+
+    let ajaxLogin = () => {
+
+        let data = {"username":$("#username").val(), "password":$("#password").val()};
+        let csrfHeader = $("#_csrf_header").attr('content');
+        let csrfToken = $("#_csrf").attr('content');
+
+        let callback =
+        $.ajax({
+            type       : "post",
+            url        : "http://localhost:8080/api/login",
+            data       : JSON.stringify(data), // object -> json String
+            dataType   : "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.setRequestHeader(csrfHeader, csrfToken)
+            }
+        })
+        callback.success( data => {
+            console.log(JSON.stringify(data));
+            location.href = "/";
+        });
+        callback.error( (xhr, status, error) => {
+            console.log("[STATUS] : " + xhr.status);
+            console.log("[MESSAGE] : " + xhr.responseText);
+            location.href = "/login?error=true&exception=" + xhr.responseText;
+        })
+    }
+</script>
+
+
 <body>
 <div th:replace="layout/top::header"></div>
 <div class="container">
@@ -50,34 +95,12 @@
                 <div class="form-group">
                     Remember Me<input type="checkbox" name="remember-me" />
                 </div>
-                <button type="submit" class="btn btn-lg btn-primary btn-block">로그인</button>
-                <button type="button" class="btn btn-lg btn-primary btn-block" th:onclick="ajaxLogin()">Ajax 로그인</button>
+                <button type="submit" class="btn btn-lg btn-primary btn-block">FORM LOGIN</button>
+                <button type="button" class="btn btn-lg btn-primary btn-block" th:onclick="ajaxLogin()">Ajax LOGIN</button>
             </form>
         </div>
     </div>
 </div>
-
-<script>
-
-let ajaxLogin = () => {
-
-    let header = {"X-Requested-with" : "XMLHttpRequest"};
-    let data = {"username":$("#username").val(), "password":$("#password").val()};
-
-    let callback = $.ajax({
-                        url     :"http://localhost:8080/api/login",
-                        type    :"post",
-                        contentType:" application/json",
-                        datatype:"json",
-                        header  : header,
-                        body: data
-                    })
-    callback.done((data) => alert(data))
-
-
-}
-
-</script>
 
 </body>
 </html>

@@ -2,13 +2,11 @@ package com.example.spring_security_practice.controller.login;
 
 import com.example.spring_security_practice.domain.Account;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,10 +22,12 @@ public class LoginController {
                         Model model){
 
         // 에러메세지 한글로 바꾸기
-        if("Invalid Username or Password".equals(exception))
-            exception = "아이디 혹은 비밀번호가 일치하지 않습니다";
-        if("Invalid SecretKey".equals(exception))
-            exception = "시크릿키가 일치하지 않습니다";
+        if(exception != null){
+            if(exception.contains("Invalid Username or Password"))
+                exception = "아이디 혹은 비밀번호가 일치하지 않습니다";
+            if(exception.contains("Invalid SecretKey"))
+                exception = "시크릿키가 일치하지 않습니다";
+        }
 
         model.addAttribute("error", error);
         model.addAttribute("exception",exception);

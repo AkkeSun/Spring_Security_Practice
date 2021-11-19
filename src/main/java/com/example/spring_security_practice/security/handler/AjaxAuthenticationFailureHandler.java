@@ -21,7 +21,7 @@ public class AjaxAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
 
-        response.setStatus(HttpStatus.OK.value());
+        response.setStatus(HttpStatus.NOT_FOUND.value());
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 
         objectMapper.writeValue(response.getWriter(), e.getMessage());

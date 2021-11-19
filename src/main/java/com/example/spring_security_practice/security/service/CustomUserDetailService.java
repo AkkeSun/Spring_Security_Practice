@@ -31,7 +31,7 @@ public class CustomUserDetailService implements UserDetailsService {
         
         Account account = repository.findByUsername(username);
         if(account == null)
-            throw new UsernameNotFoundException("UserName Not Found Exception");
+            throw new UsernameNotFoundException("Invalid Username or Password");
 
         List<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority(account.getRole()));
