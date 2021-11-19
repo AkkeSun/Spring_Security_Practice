@@ -1,4 +1,4 @@
-package com.example.spring_security_practice.security.service;
+package com.example.spring_security_practice.security.common.service;
 
 
 import com.example.spring_security_practice.domain.Account;

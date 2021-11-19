@@ -1,4 +1,4 @@
-package com.example.spring_security_practice.security.common;
+package com.example.spring_security_practice.security.common.AuthenticationDetails;
 
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 

@@ -1,4 +1,4 @@
-package com.example.spring_security_practice.security.common;
+package com.example.spring_security_practice.security.common.AuthenticationEntryPoint;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -13,7 +13,5 @@ public class AjaxLoginAuthenticationEntryPoint implements AuthenticationEntryPoi
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
         //=========== 익명사용자가 인증이 필요한 자원에 접근 시 발동 (401) =============
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "UnAuthorized");
-
-
     }
 }

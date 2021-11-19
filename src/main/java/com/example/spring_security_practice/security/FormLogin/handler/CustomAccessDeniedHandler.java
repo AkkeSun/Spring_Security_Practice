@@ -1,4 +1,4 @@
-package com.example.spring_security_practice.security.handler;
+package com.example.spring_security_practice.security.FormLogin.handler;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

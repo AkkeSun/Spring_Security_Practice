@@ -1,9 +1,9 @@
-package com.example.spring_security_practice.security.config;
+package com.example.spring_security_practice.security.FormLogin.config;
 
-import com.example.spring_security_practice.security.handler.CustomAccessDeniedHandler;
-import com.example.spring_security_practice.security.handler.CustomAuthenticationFailureHandler;
-import com.example.spring_security_practice.security.handler.CustomAuthenticationSuccessHandler;
-import com.example.spring_security_practice.security.provider.CustomAuthenticationProvider;
+import com.example.spring_security_practice.security.FormLogin.handler.CustomAccessDeniedHandler;
+import com.example.spring_security_practice.security.FormLogin.handler.CustomAuthenticationFailureHandler;
+import com.example.spring_security_practice.security.FormLogin.handler.CustomAuthenticationSuccessHandler;
+import com.example.spring_security_practice.security.FormLogin.provider.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -29,8 +29,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AuthenticationDetailsSource detailsSource;
-
-
 
     @Override
     //============ Login처리 ============

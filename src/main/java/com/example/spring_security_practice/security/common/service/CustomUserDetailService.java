@@ -1,8 +1,7 @@
-package com.example.spring_security_practice.security.service;
+package com.example.spring_security_practice.security.common.service;
 
 import com.example.spring_security_practice.domain.Account;
 import com.example.spring_security_practice.repository.AccountRepository;
-import com.example.spring_security_practice.security.common.FormWebAuthenticationDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

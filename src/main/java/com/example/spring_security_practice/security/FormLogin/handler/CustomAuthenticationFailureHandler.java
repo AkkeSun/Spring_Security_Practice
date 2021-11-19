@@ -1,7 +1,5 @@
-package com.example.spring_security_practice.security.handler;
+package com.example.spring_security_practice.security.FormLogin.handler;
 
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 

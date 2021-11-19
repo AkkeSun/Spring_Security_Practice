@@ -1,8 +1,7 @@
-package com.example.spring_security_practice.security.filter;
+package com.example.spring_security_practice.security.AjaxLogin.filter;
 
-import com.example.spring_security_practice.domain.Account;
 import com.example.spring_security_practice.domain.AccountDto;
-import com.example.spring_security_practice.security.token.AjaxAuthenticationToken;
+import com.example.spring_security_practice.security.AjaxLogin.token.AjaxAuthenticationToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
@@ -26,7 +25,7 @@ public class AjaxLoginProcessingFilter extends AbstractAuthenticationProcessingF
     private ObjectMapper objectMapper = new ObjectMapper();
     private ModelMapper modelMapper = new ModelMapper();
 
-    // 해당 url만 요청받아라 (public으로 만들기)
+    // 요청받을 login url 설정
     public AjaxLoginProcessingFilter() {
         super(new AntPathRequestMatcher("/api/login"));
     }
@@ -57,7 +56,4 @@ public class AjaxLoginProcessingFilter extends AbstractAuthenticationProcessingF
         return false;
     }
 
-    public void setObjectMapper(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
 }

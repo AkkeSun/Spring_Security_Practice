@@ -16,6 +16,8 @@ public class MessageController {
     @ResponseBody
     @GetMapping("/api/message")
     public String apiMessage() throws Exception{
+        System.out.println("In Controller");
         return "API MESSAGE OK";
     }
+
 }

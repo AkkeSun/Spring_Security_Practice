@@ -1,4 +1,4 @@
-package com.example.spring_security_practice.security.token;
+package com.example.spring_security_practice.security.AjaxLogin.token;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;

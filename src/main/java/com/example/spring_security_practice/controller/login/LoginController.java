@@ -62,4 +62,16 @@ public class LoginController {
         return"user/login/denied";
     }
 
+
+    @GetMapping("/api/denied")
+    public String ajaxAccessDenied( @RequestParam(value = "exception", required = false) String exception, Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Account account = (Account) authentication.getPrincipal();
+
+        model.addAttribute("username", account.getUsername());
+        model.addAttribute("exception", exception);
+
+        return"user/login/denied";
+    }
+
 }

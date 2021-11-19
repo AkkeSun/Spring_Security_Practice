@@ -1,4 +1,4 @@
-package com.example.spring_security_practice.security.handler;
+package com.example.spring_security_practice.security.AjaxLogin.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;

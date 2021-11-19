@@ -1,9 +1,11 @@
-package com.example.spring_security_practice.security.config;
+package com.example.spring_security_practice.security.AjaxLogin.config;
 
-import com.example.spring_security_practice.security.common.AjaxLoginAuthenticationEntryPoint;
-import com.example.spring_security_practice.security.filter.AjaxLoginProcessingFilter;
-import com.example.spring_security_practice.security.handler.*;
-import com.example.spring_security_practice.security.provider.AjaxAuthenticationProvider;
+import com.example.spring_security_practice.security.AjaxLogin.handler.AjaxAccessDeniedHandler;
+import com.example.spring_security_practice.security.AjaxLogin.handler.AjaxAuthenticationFailureHandler;
+import com.example.spring_security_practice.security.AjaxLogin.handler.AjaxAuthenticationSuccessHandler;
+import com.example.spring_security_practice.security.common.AuthenticationEntryPoint.AjaxLoginAuthenticationEntryPoint;
+import com.example.spring_security_practice.security.AjaxLogin.filter.AjaxLoginProcessingFilter;
+import com.example.spring_security_practice.security.AjaxLogin.provier.AjaxAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
