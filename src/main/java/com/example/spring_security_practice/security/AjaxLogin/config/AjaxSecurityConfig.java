@@ -44,7 +44,6 @@ public class AjaxSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         //============ 인증 (ajax 필터) ============
-
         http
                 .addFilterBefore(ajaxLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class); // 기존 필터 앞에 위치하도록
 

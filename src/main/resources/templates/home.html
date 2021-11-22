@@ -4,84 +4,13 @@
 
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
 <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
-
 <head th:replace="layout/header::userHead"></head>
-
-<script>
-
-    let message = () => {
-
-        let csrfHeader = $("#_csrf_header").attr('content');
-        let csrfToken = $("#_csrf").attr('content');
-
-        let callback =
-            $.ajax({
-                type       : "post",
-                url        : "/api/message",
-                dataType   : "json",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Content-type", "application/json");
-                    xhr.setRequestHeader(csrfHeader, csrfToken)
-                }
-            })
-        callback.success( data => {
-            $("#mainContents").html(data);
-        });
-        callback.fail( (xhr, status, error) => {
-            /*
-            if(xhr.status == '401') // 익명 사용자
-                location.href = "/login?error=true&exception=" + xhr.responseText;
-            if(xhr.status == '403') // 접근 권한 없는 사용자
-                location.href = "/api/denied?exception=" + xhr.responseText;
-             */
-            alert(error);
-        })
-    }
-</script>
-
 
 <body>
 <div th:replace="layout/top::header"></div>
 <div class="container">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/">
-                            대시보드
-                        </a>
-                    </li>
-                    <!-- [AJAX VERSION] -->
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="message()">
-                            메세지
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclicck="myPage()">
-                            마이페이지
-                        </a>
-                    </li>
-
-
-
-                    <!-- [FORM LOGIN VERSION] -->
-                    <!--
-                    <li class="nav-item">
-                        <a class="nav-link" href="/message">
-                            메세지
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/myPage">
-                            마이페이지
-                        </a>
-                    </li>
-                    -->
-                </ul>
-            </div>
-        </nav>
+        <div th:replace="layout/sidebar"></div>
         <div class="col-md-10">
             <H1 style="text-align: center" id="mainContents">HOME</H1>
         </div>

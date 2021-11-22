@@ -2,6 +2,7 @@ package com.example.spring_security_practice.controller.user;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -14,9 +15,8 @@ public class MessageController {
     }
 
     @ResponseBody
-    @GetMapping("/api/message")
+    @PostMapping("/api/message")
     public String apiMessage() throws Exception{
-        System.out.println("In Controller");
         return "API MESSAGE OK";
     }
 

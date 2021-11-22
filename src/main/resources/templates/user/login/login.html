@@ -51,27 +51,7 @@ post, put, delete 요청시 CSRF Token과 CSFR Header를 실어 보내야한다
 <div th:replace="layout/top::header"></div>
 <div class="container">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/">
-                            대시보드
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/message">
-                            메세지
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/myPage">
-                            마이페이지
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <div th:replace="layout/sidebar"></div>
         <div class="col-md-10 text-center login-form">
             <br>
             <div class="panel">
