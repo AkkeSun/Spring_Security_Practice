@@ -1,7 +1,7 @@
 package com.example.spring_security_practice.security.common.service;
 
 
-import com.example.spring_security_practice.domain.Account;
+import com.example.spring_security_practice.domain.entity.Account;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 

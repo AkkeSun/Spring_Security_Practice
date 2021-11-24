@@ -1,0 +1,90 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/common/head::adminHead"></head>
+
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+<script>
+
+    function updateFunc() {
+
+        let data = {"roleName":$("#roleName").val(), "roleDesc":$("#roleDesc").val()};
+        let csrfHeader = $("#_csrf_header").attr('content');
+        let csrfToken = $("#_csrf").attr('content');
+
+        let callback =
+            $.ajax({
+                type       : "put",
+                url        : "/api/admin/roles/"+$("#id").val(),
+                data       : JSON.stringify(data), // object -> json String
+                dataType   : "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Content-type", "application/json");
+                    xhr.setRequestHeader(csrfHeader, csrfToken)
+                }
+            });
+        callback.success( data => {
+            location.href = "/admin/roles";
+        });
+    }
+
+
+    function deleteFunc() {
+
+        let csrfHeader = $("#_csrf_header").attr('content');
+        let csrfToken = $("#_csrf").attr('content');
+
+        let callback =
+            $.ajax({
+                type       : "delete",
+                url        : "/api/admin/roles/"+$("#id").val(),
+                dataType   : "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Content-type", "application/json");
+                    xhr.setRequestHeader(csrfHeader, csrfToken)
+                }
+            });
+        callback.done ( () => {
+            location.href = "/admin/roles";
+        });
+    }
+
+</script>
+
+<body>
+<div th:replace="layout/top::header"></div>
+
+<div id="maininner"><!-- maininner (s)-->
+    <div class="cc-tab-con">
+        <a href="javascript:tabChange('1');" class="cc-tab-item">사용자관리</a>
+        <a href="javascript:void(0);" class="cc-tab-item on">권한관리</a>
+        <a href="javascript:tabChange('3');" class="cc-tab-item">리소스관리</a>
+    </div>
+    <div class="tbl_wrp">
+
+        <form class="form-horizontal" th:object="${role}">
+            <div class="form-group">
+                <label for="roleName" class="col-sm-2 control-label">권한이름</label>
+                <div class="col-sm-10">
+                <input class="form-control input-large" id="roleName" type="text" th:field="*{roleName}"  placeholder="id"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="roleDesc" class="col-sm-2 control-label">설명</label>
+                <div class="col-sm-10">
+                <input class="form-control input-large" id="roleDesc" type="text" th:field="*{roleDesc}" placeholder="pwd"/>
+                </div>
+            </div>
+            <input type="hidden" th:field="*{id}" />
+            <input type="button" class="btn btn-dark btn-lg" th:onclick="updateFunc()" value="수정"/>
+            <input type="button" class="btn btn-dark btn-lg" th:onclick="deleteFunc()" value="삭제"/>
+            <a class="btn btn-dark btn-lg" th:href="@{/admin/roles}">목록</a>
+        </form>
+
+    </div>
+</div>
+
+
+
+</body>
+</html>

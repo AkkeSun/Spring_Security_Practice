@@ -13,7 +13,7 @@ post, put, delete 요청시 CSRF Token과 CSFR Header를 실어 보내야한다
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
 <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
 
-<head th:replace="layout/header::userHead"></head>
+<head th:replace="admin/common/head::adminHead"></head>
 
 <script>
 

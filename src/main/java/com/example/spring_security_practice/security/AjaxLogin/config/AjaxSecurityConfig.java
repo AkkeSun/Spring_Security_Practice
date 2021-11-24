@@ -39,6 +39,7 @@ public class AjaxSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatcher("/api/**")
                 .authorizeRequests()
                 .antMatchers("/api/message").hasRole("ADMIN")
+                .antMatchers("/api/myPage").hasRole("USER")
                 .anyRequest().authenticated()
         ;
 

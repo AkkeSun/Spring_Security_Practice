@@ -1,11 +1,8 @@
 package com.example.spring_security_practice.controller.user;
 
-import com.example.spring_security_practice.domain.Account;
-import com.example.spring_security_practice.domain.AccountDto;
+import com.example.spring_security_practice.domain.dto.AccountDto;
 import com.example.spring_security_practice.service.AccountService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

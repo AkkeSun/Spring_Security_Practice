@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -33,15 +34,15 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
         String password = (String) authentication.getCredentials();
 
         // DB에 저장된 유저 정보가 담겨있는 객채
-        AccountContext accountContext = (AccountContext) userDetailsService.loadUserByUsername(username);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         // DB데이터와 로그인 데이터가 일치한지 검증
-        if(!passwordEncoder.matches(password, accountContext.getAccount().getPassword()))
+        if(!passwordEncoder.matches(password, userDetails.getPassword()))
             throw new BadCredentialsException("Invalid Username or Password");
 
         // 인승 성공하면 토큰 생성
         AjaxAuthenticationToken authenticationToken =
-                new AjaxAuthenticationToken(accountContext.getAccount(), null, accountContext.getAuthorities());
+                new AjaxAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         return authenticationToken;
     }
 

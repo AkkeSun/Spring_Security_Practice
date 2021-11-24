@@ -1,7 +1,9 @@
 package com.example.spring_security_practice.security.common.service;
 
-import com.example.spring_security_practice.domain.Account;
+import com.example.spring_security_practice.domain.entity.Account;
+import com.example.spring_security_practice.domain.entity.Role;
 import com.example.spring_security_practice.repository.AccountRepository;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,8 +13,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * UserDetailsService
@@ -30,12 +33,14 @@ public class CustomUserDetailService implements UserDetailsService {
         
         Account account = repository.findByUsername(username);
         if(account == null)
-            throw new UsernameNotFoundException("Invalid Username or Password");
+            throw new UsernameNotFoundException("No user found with username: " + username);
 
-        List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority(account.getRole()));
-        AccountContext accountContext = new AccountContext(account, roles);
+        return new User(account.getUsername(), account.getPassword(), authorities(account.getUserRoles()));
+    }
 
-        return accountContext;
+    private Collection<? extends GrantedAuthority> authorities(Set<Role> roles) {
+        return roles.stream()
+                .map(r -> new SimpleGrantedAuthority( r.getRoleName()))
+                .collect(Collectors.toSet());
     }
 }

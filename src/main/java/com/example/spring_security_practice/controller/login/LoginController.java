@@ -1,8 +1,9 @@
 package com.example.spring_security_practice.controller.login;
 
-import com.example.spring_security_practice.domain.Account;
+import com.example.spring_security_practice.domain.entity.Account;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,7 +55,7 @@ public class LoginController {
     @GetMapping("/denied")
     public String accessDenied( @RequestParam(value = "exception", required = false) String exception, Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Account account = (Account) authentication.getPrincipal();
+        UserDetails account = (UserDetails) authentication.getPrincipal();
 
         model.addAttribute("username", account.getUsername());
         model.addAttribute("exception", exception);
@@ -66,7 +67,7 @@ public class LoginController {
     @GetMapping("/api/denied")
     public String ajaxAccessDenied( @RequestParam(value = "exception", required = false) String exception, Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Account account = (Account) authentication.getPrincipal();
+        UserDetails account = (UserDetails) authentication.getPrincipal();
 
         model.addAttribute("username", account.getUsername());
         model.addAttribute("exception", exception);

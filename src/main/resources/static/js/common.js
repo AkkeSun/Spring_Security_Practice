@@ -23,3 +23,16 @@ let link = (link) => {
             location.href = "/api/denied?exception=" + errMsg;
     })
 }
+
+
+// ---------admin 링크이동 --------
+function tabChange(tabNum){
+    if(tabNum == '1'){
+        location.href='/admin/accounts';
+    }else if(tabNum == '2'){
+        location.href='/admin/roles';
+    }else if(tabNum == '3'){
+        location.href='/admin/resources';
+    }
+
+}

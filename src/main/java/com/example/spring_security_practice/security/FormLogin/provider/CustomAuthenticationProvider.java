@@ -9,6 +9,7 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -35,10 +36,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String password = (String) authentication.getCredentials();
 
         // DB에 저장된 유저 정보가 담겨있는 객채
-        AccountContext accountContext = (AccountContext) userDetailsService.loadUserByUsername(username);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         // DB데이터와 로그인 데이터가 일치한지 검증
-        if(!passwordEncoder.matches(password, accountContext.getAccount().getPassword()))
+        if(!passwordEncoder.matches(password, userDetails.getPassword()))
             throw new BadCredentialsException("Invalid Username or Password");
 
         // formWebAuthenticationDetails로 가져온 파라미터(secretKey)가 일치하는지 검증
@@ -49,7 +50,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         // 인승 성공하면 토큰 생성 (SpringBoot가 기본 제공하는 토큰임)
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(accountContext.getAccount(), null, accountContext.getAuthorities());
+                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         return authenticationToken;
     }
 

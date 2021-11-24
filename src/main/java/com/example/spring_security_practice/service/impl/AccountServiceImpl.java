@@ -1,8 +1,10 @@
 package com.example.spring_security_practice.service.impl;
 
-import com.example.spring_security_practice.domain.Account;
-import com.example.spring_security_practice.domain.AccountDto;
+import com.example.spring_security_practice.domain.entity.Account;
+import com.example.spring_security_practice.domain.dto.AccountDto;
+import com.example.spring_security_practice.domain.entity.Role;
 import com.example.spring_security_practice.repository.AccountRepository;
+import com.example.spring_security_practice.repository.RoleRepository;
 import com.example.spring_security_practice.service.AccountService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +12,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class AccountServiceImpl implements AccountService {
 
     @Autowired
-    private AccountRepository repository;
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -24,10 +32,59 @@ public class AccountServiceImpl implements AccountService {
     private ModelMapper modelMapper;
 
     @Transactional
-    @Override
     public void createUser(AccountDto dto) {
-        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        // role 기본값 설정
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleRepository.findByRoleName("ROLE_USER"));
+
         Account account = modelMapper.map(dto, Account.class);
-        repository.save(account);
+        account.setPassword(passwordEncoder.encode(dto.getPassword()));
+        account.setUserRoles(roles);
+
+        accountRepository.save(account);
     }
+
+    @Transactional
+    public Account updateUser(Long id, AccountDto dto) {
+
+        Account check = accountRepository.findById(id).get();
+        if(check == null)
+            throw new NullPointerException("User Not Found");
+
+        // role setting
+        Set<Role> roles = new HashSet<>();
+        List<String> rolesInput = dto.getRoles();
+        rolesInput.forEach( r -> {
+            roles.add(roleRepository.findByRoleName(r));
+        });
+
+        // password setting
+        if(dto.getPassword().equals(""))
+            dto.setPassword(check.getPassword());
+        else
+            dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        // upate
+        Account account = modelMapper.map(dto, Account.class);
+        account.setId(id);
+        account.setUserRoles(roles);
+        return accountRepository.save(account);
+    }
+
+    @Transactional
+    public List<Account> findAll() {
+        return accountRepository.findAll();
+    }
+
+    @Transactional
+    public Account getUser(Long id) {
+        return accountRepository.findById(id).get();
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        accountRepository.deleteById(id);
+    }
+
 }
