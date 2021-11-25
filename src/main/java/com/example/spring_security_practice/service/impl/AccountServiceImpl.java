@@ -32,11 +32,17 @@ public class AccountServiceImpl implements AccountService {
     private ModelMapper modelMapper;
 
     @Transactional
-    public void createUser(AccountDto dto) {
+    public void createUser(AccountDto dto, boolean isAdmin) {
 
-        // role 기본값 설정
+        // role setting
         Set<Role> roles = new HashSet<>();
-        roles.add(roleRepository.findByRoleName("ROLE_USER"));
+
+        if(isAdmin) {
+            List<String> rolesInput = dto.getRoles();
+            rolesInput.forEach( r -> roles.add(roleRepository.findByRoleName(r)) );
+        } else {
+            roles.add(roleRepository.findByRoleName("ROLE_USER"));
+        }
 
         Account account = modelMapper.map(dto, Account.class);
         account.setPassword(passwordEncoder.encode(dto.getPassword()));
@@ -46,7 +52,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Transactional
-    public Account updateUser(Long id, AccountDto dto) {
+    public void updateUser(Long id, AccountDto dto) {
 
         Account check = accountRepository.findById(id).get();
         if(check == null)
@@ -69,7 +75,7 @@ public class AccountServiceImpl implements AccountService {
         Account account = modelMapper.map(dto, Account.class);
         account.setId(id);
         account.setUserRoles(roles);
-        return accountRepository.save(account);
+        accountRepository.save(account);
     }
 
     @Transactional
@@ -82,7 +88,7 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findById(id).get();
     }
 
-    @Override
+    @Transactional
     public void deleteUser(Long id) {
         accountRepository.deleteById(id);
     }

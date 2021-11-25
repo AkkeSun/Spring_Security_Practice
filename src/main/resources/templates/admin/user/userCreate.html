@@ -1,0 +1,96 @@
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/common/head::adminHead"></head>
+
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+<body>
+
+<script>
+  function createFunc() {
+
+    let roles = [];
+    $("input[name='roles']:checked").each(function() {
+      roles.push($(this).val());
+    });
+
+    let data = {"username":$("#username").val(), "password":$("#password").val(),
+                "email":$("#email").val(), "age":$("#age").val(),
+                "roles":roles};
+    let csrfHeader = $("#_csrf_header").attr('content');
+    let csrfToken = $("#_csrf").attr('content');
+
+    let callback =
+            $.ajax({
+              type       : "post",
+              url        : "/api/admin/accounts",
+              data       : JSON.stringify(data), // object -> json String
+              dataType   : "json",
+              beforeSend: function (xhr) {
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.setRequestHeader(csrfHeader, csrfToken)
+              }
+            });
+    callback.success( data => {
+      location.href = "/admin/accounts";
+    });
+  }
+
+</script>
+
+<div th:replace="admin/common/top::header"></div>
+<div id="maininner"><!-- maininner (s)-->
+  <div class="cc-tab-con">
+    <a href="javascript:void(0);" class="cc-tab-item on">사용자관리</a>		<!--// on : 현재 위치 //-->
+    <a href="javascript:tabChange('2');" class="cc-tab-item">권한관리</a>
+    <a href="javascript:tabChange('3');" class="cc-tab-item">리소스관리</a>
+  </div>
+  <div class="tbl_wrp">
+    <form class="form-horizontal" th:object="${account}">
+      <div class="form-group">
+        <label for="username" class="col-sm-2 control-label">아이디</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control input-large" id="username" placeholder="username" th:value="*{username}" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">비밀번호</label>
+        <div class="col-sm-10">
+          <input type="password" class="form-control input-large" id="password" placeholder="Password" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">이메일</label>
+        <div class="col-sm-10">
+          <input type="email" class="form-control input-large" id="email" placeholder="이메일" th:value="*{email}" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="age" class="col-sm-2 control-label">나이</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control input-large" id="age" placeholder="나이" th:value="*{age}" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">권한</label>
+        <div class="col-sm-10">
+          <th:block th:each="role: ${roleList}">
+            <input type="checkbox" name="roles" th:value="${role.roleName}">
+            <th:block th:text="${role.roleDesc}"></th:block> (  <th:block th:text="${role.roleName}"></th:block> )
+            <br>
+          </th:block>
+          </input>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-10">
+          <button type="button" th:onclick="createFunc()" class="btn btn-dark btn-lg">등록</button>
+          <a class="btn btn-dark btn-lg" th:href="@{/admin/accounts}">목록 </a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

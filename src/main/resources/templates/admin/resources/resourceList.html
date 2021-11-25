@@ -21,19 +21,19 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="link_btn hover" th:each="resource : ${resources}">
+            <tr class="link_btn hover" th:each="res : ${res}">
 
                 <td style="text-align: left;">
-                    <a th:href="@{'/admin/resources/' + ${resource.id}}"><span th:text="${resource.resourceName}">회원</span></a>
+                    <a th:href="@{'/admin/resources/' + ${res.id}}"><span th:text="${res.resourceName}">회원</span></a>
                 </td>
-                <td style="text-align: left;" th:text="${resource.resourceType}"></td>
-                <td style="text-align: left;" th:text="${resource.httpMethod}"></td>
-                <td style="text-align: left;" th:text="${resource.orderNum}"></td>
+                <td style="text-align: left;" th:text="${res.resourceType}"></td>
+                <td style="text-align: left;" th:text="${res.httpMethod}"></td>
+                <td style="text-align: left;" th:text="${res.orderNum}"></td>
             </tr>
             </tbody>
         </table>
         <div style="text-align:right;">
-            <p><a class="btn btn-dark btn-lg" style="margin:10;" th:href="@{/admin/resources/register}">리소드 등록</a></p>
+            <p><a class="btn btn-dark btn-lg" style="margin:10;" th:href="@{/admin/resources/create}">리소드 등록</a></p>
         </div>
     </div>
 </div>

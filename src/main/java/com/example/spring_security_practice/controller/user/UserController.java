@@ -36,7 +36,7 @@ public class UserController {
 
     @PostMapping("/users")
     public String createUser(AccountDto dto) {
-        service.createUser(dto);
+        service.createUser(dto, false);
         return "redirect:/";
     }
 
