@@ -29,10 +29,10 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Transactional
     public void createResource(ResourcesDto dto) {
-
-        Role role = roleRepository.findByRoleName(dto.getRoleName());
         Set<Role> roles = new HashSet<>();
-        roles.add(role);
+        List<Role> roleList = roleRepository.getRolesForAccount(dto.getRoleName());
+        roleList.forEach( role -> roles.add(role) );
+
         Resources resources = modelMapper.map(dto, Resources.class);
         resources.setRoleSet(roles);
 
@@ -61,9 +61,9 @@ public class ResourceServiceImpl implements ResourceService {
         if(check == null)
             throw new NullPointerException("Resources Not Found");
 
-        Role role = roleRepository.findByRoleName(dto.getRoleName());
         Set<Role> roles = new HashSet<>();
-        roles.add(role);
+        List<Role> roleList = roleRepository.getRolesForAccount(dto.getRoleName());
+        roleList.forEach( role -> roles.add(role) );
 
         Resources resources = modelMapper.map(dto, Resources.class);
         resources.setRoleSet(roles);

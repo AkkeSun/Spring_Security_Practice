@@ -9,14 +9,9 @@
 <script>
   function updateFunc() {
 
-    let roles = [];
-    $("input[name='roles']:checked").each(function() {
-      roles.push($(this).val());
-    });
-
     let data = {"username":$("#username").val(), "password":$("#password").val(),
                 "email":$("#email").val(), "age":$("#age").val(),
-                "roles":roles};
+                "role":$("#email").val()};
     let csrfHeader = $("#_csrf_header").attr('content');
     let csrfToken = $("#_csrf").attr('content');
 
@@ -94,14 +89,13 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-2 control-label">권한</label>
+        <label for="roleName" class="col-sm-2 control-label">권한</label>
         <div class="col-sm-10">
-          <th:block th:each="role: ${roleList}">
-            <input type="checkbox" name="roles" th:value="${role.roleName}">
-            <th:block th:text="${role.roleDesc}"></th:block> (  <th:block th:text="${role.roleName}"></th:block> )
-            <br>
-          </th:block>
-          </input>
+          <select class="custom-select" name="role" id="role">
+            <option th:each="role: ${roleList}"
+                    th:value="${role.roleName}"
+                    th:text="${role.roleName}"/>
+          </select>
         </div>
       </div>
       <div class="form-group">

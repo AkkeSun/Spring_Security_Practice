@@ -38,8 +38,8 @@ public class AccountServiceImpl implements AccountService {
         Set<Role> roles = new HashSet<>();
 
         if(isAdmin) {
-            List<String> rolesInput = dto.getRoles();
-            rolesInput.forEach( r -> roles.add(roleRepository.findByRoleName(r)) );
+         List<Role> roleList = roleRepository.getRolesForAccount(dto.getRole());
+         roleList.forEach( role -> roles.add(role) );
         } else {
             roles.add(roleRepository.findByRoleName("ROLE_USER"));
         }
@@ -60,10 +60,8 @@ public class AccountServiceImpl implements AccountService {
 
         // role setting
         Set<Role> roles = new HashSet<>();
-        List<String> rolesInput = dto.getRoles();
-        rolesInput.forEach( r -> {
-            roles.add(roleRepository.findByRoleName(r));
-        });
+        List<Role> roleList = roleRepository.getRolesForAccount(dto.getRole());
+        roleList.forEach( role -> roles.add(role) );
 
         // password setting
         if(dto.getPassword().equals(""))

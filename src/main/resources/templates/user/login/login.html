@@ -26,7 +26,7 @@ post, put, delete 요청시 CSRF Token과 CSFR Header를 실어 보내야한다
         let callback =
         $.ajax({
             type       : "post",
-            url        : "http://localhost:8080/api/login",
+            url        : "/api/login",
             data       : JSON.stringify(data), // object -> json String
             dataType   : "json",
             beforeSend: function (xhr) {

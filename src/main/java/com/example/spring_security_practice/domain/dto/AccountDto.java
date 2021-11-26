@@ -16,5 +16,5 @@ public class AccountDto {
     private String password;
     private String email;
     private String age;
-    private List<String> roles;
+    private String role;
 }

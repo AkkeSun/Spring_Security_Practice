@@ -6,9 +6,17 @@ import com.example.spring_security_practice.security.AjaxLogin.handler.AjaxAuthe
 import com.example.spring_security_practice.security.common.AuthenticationEntryPoint.AjaxLoginAuthenticationEntryPoint;
 import com.example.spring_security_practice.security.AjaxLogin.filter.AjaxLoginProcessingFilter;
 import com.example.spring_security_practice.security.AjaxLogin.provier.AjaxAuthenticationProvider;
+import com.example.spring_security_practice.security.common.factory.UrlResourcesMapFactoryBean;
+import com.example.spring_security_practice.security.common.metadataSource.UrlFilterInvocationSecurityMetadataSource;
+import com.example.spring_security_practice.security.common.service.SecurityResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,15 +24,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @Order(0)
 public class AjaxSecurityConfig extends WebSecurityConfigurerAdapter {
-
 
     @Override
     //============ Login처리 ============
@@ -49,7 +60,7 @@ public class AjaxSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(ajaxLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class); // 기존 필터 앞에 위치하도록
 
 
-        //============ 에러처리 ============
+        //============ 인가 에러처리 ============
         http
                 .exceptionHandling()
                 .authenticationEntryPoint(new AjaxLoginAuthenticationEntryPoint()) // 익명 사용자 접근시
@@ -95,5 +106,6 @@ public class AjaxSecurityConfig extends WebSecurityConfigurerAdapter {
     public AccessDeniedHandler ajaxAjaxAccessDeniedHandler(){
         return new AjaxAccessDeniedHandler();
     }
+
 
 }

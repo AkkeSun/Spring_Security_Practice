@@ -13,5 +13,6 @@ public class RoleDto{
 
     private String roleName;
     private String roleDesc;
+    private int roleNum;
 
 }

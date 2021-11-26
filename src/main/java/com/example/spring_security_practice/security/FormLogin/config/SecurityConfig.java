@@ -4,11 +4,18 @@ import com.example.spring_security_practice.security.FormLogin.handler.CustomAcc
 import com.example.spring_security_practice.security.FormLogin.handler.CustomAuthenticationFailureHandler;
 import com.example.spring_security_practice.security.FormLogin.handler.CustomAuthenticationSuccessHandler;
 import com.example.spring_security_practice.security.FormLogin.provider.CustomAuthenticationProvider;
+import com.example.spring_security_practice.security.common.factory.UrlResourcesMapFactoryBean;
+import com.example.spring_security_practice.security.common.metadataSource.UrlFilterInvocationSecurityMetadataSource;
+import com.example.spring_security_practice.security.common.service.SecurityResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,8 +26,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -29,6 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AuthenticationDetailsSource detailsSource;
+    @Autowired
+    private SecurityResourceService securityResourceService;
 
     @Override
     //============ Login처리 ============
@@ -54,6 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
         ;
+
         //============ 인증 ============
         http
                 .formLogin()
@@ -71,7 +85,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(accessDeniedHandler())
         ;
 
+        //============ DB를 활용한 인가처리 Filter 등록 ============
+        http
+                .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class) // FilterSecurityInterceptor 앞에 둘 것
+        ;
     }
+
+
+
+
+
 
 
     @Bean
@@ -89,7 +112,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new CustomAuthenticationSuccessHandler();
     }
 
-
     @Bean
     public AuthenticationFailureHandler customAuthenticationFailureHandler(){
         return new CustomAuthenticationFailureHandler();
@@ -100,6 +122,43 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CustomAccessDeniedHandler accessDeniedHandler = new CustomAccessDeniedHandler();
         accessDeniedHandler.setErrorPage("/denied");
         return accessDeniedHandler;
+    }
+
+
+
+
+
+    //======== DB를 통해 인가처리를 하기 위한 Filter =========
+    @Bean
+    public FilterSecurityInterceptor customFilterSecurityInterceptor() throws Exception {
+
+        FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
+        filterSecurityInterceptor.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource()); // 시큐리티 인가 정보
+        filterSecurityInterceptor.setAccessDecisionManager(affirmativeBased()); // 접근 결정 매니저
+        filterSecurityInterceptor.setAuthenticationManager(authenticationManager()); // 인증 매니저
+        return filterSecurityInterceptor;
+    }
+
+
+    @Bean
+    public UrlFilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource() throws Exception {
+        return new UrlFilterInvocationSecurityMetadataSource(uriResourcesMapFactoryBean(securityResourceService).getObject());
+    }
+    private UrlResourcesMapFactoryBean uriResourcesMapFactoryBean(SecurityResourceService securityResourceService){
+        UrlResourcesMapFactoryBean uriResourcesMapFactoryBean = new UrlResourcesMapFactoryBean(securityResourceService);
+        return  uriResourcesMapFactoryBean;
+    }
+
+
+    // 접근결정 매니저 Bean 등록
+    @Bean
+    public AccessDecisionManager affirmativeBased(){
+        AffirmativeBased affirmativeBased = new AffirmativeBased(getAccessDecis());
+        return affirmativeBased;
+    }
+
+    private List<AccessDecisionVoter<?>> getAccessDecis(){
+        return Arrays.asList(new RoleVoter());
     }
 
 }

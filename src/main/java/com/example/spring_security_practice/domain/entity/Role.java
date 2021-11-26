@@ -28,6 +28,8 @@ public class Role implements Serializable {
 
     private String roleDesc;
 
+    private int roleNum;
+
     @JsonBackReference // 순환참조 방지 (자식 엔티티에 붙이기)
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roleSet")
     private Set<Resources> resourcesSet = new LinkedHashSet<>();
