@@ -9,7 +9,6 @@ public interface ResourceService {
     void createResource(ResourcesDto dto);
     List<Resources> getResources();
     Resources getResource(Long id);
-    void deleteResource(Long id);
     void updateResources(Long id, ResourcesDto dto);
 
 }

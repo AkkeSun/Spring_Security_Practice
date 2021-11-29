@@ -5,6 +5,7 @@ import com.example.spring_security_practice.domain.entity.Resources;
 import com.example.spring_security_practice.domain.entity.Role;
 import com.example.spring_security_practice.repository.ResourcesRepository;
 import com.example.spring_security_practice.repository.RoleRepository;
+import com.example.spring_security_practice.security.common.metadataSource.UrlFilterInvocationSecurityMetadataSource;
 import com.example.spring_security_practice.service.ResourceService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,31 +28,31 @@ public class ResourceServiceImpl implements ResourceService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private UrlFilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource;
+
     @Transactional
     public void createResource(ResourcesDto dto) {
         Set<Role> roles = new HashSet<>();
-        List<Role> roleList = roleRepository.getRolesForAccount(dto.getRoleName());
+        List<Role> roleList = roleRepository.getRolesForResources(dto.getRoleName());
         roleList.forEach( role -> roles.add(role) );
 
         Resources resources = modelMapper.map(dto, Resources.class);
         resources.setRoleSet(roles);
 
         resourcesRepository.save(resources);
+        // 실시간 업데이트
+        urlFilterInvocationSecurityMetadataSource.reload();
     }
 
     @Transactional
     public List<Resources> getResources() {
-        return resourcesRepository.findAll();
+        return resourcesRepository.findAllResources();
     }
 
     @Transactional
     public Resources getResource(Long id) {
         return resourcesRepository.findById(id).get();
-    }
-
-    @Transactional
-    public void deleteResource(Long id) {
-        resourcesRepository.deleteById(id);
     }
 
     @Transactional
@@ -62,7 +63,7 @@ public class ResourceServiceImpl implements ResourceService {
             throw new NullPointerException("Resources Not Found");
 
         Set<Role> roles = new HashSet<>();
-        List<Role> roleList = roleRepository.getRolesForAccount(dto.getRoleName());
+        List<Role> roleList = roleRepository.getRolesForResources(dto.getRoleName());
         roleList.forEach( role -> roles.add(role) );
 
         Resources resources = modelMapper.map(dto, Resources.class);
@@ -70,5 +71,7 @@ public class ResourceServiceImpl implements ResourceService {
         resources.setId(id);
 
         resourcesRepository.save(resources);
+        // 실시간 업데이트
+        urlFilterInvocationSecurityMetadataSource.reload();
     }
 }

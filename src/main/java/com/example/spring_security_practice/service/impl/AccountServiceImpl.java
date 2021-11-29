@@ -5,6 +5,7 @@ import com.example.spring_security_practice.domain.dto.AccountDto;
 import com.example.spring_security_practice.domain.entity.Role;
 import com.example.spring_security_practice.repository.AccountRepository;
 import com.example.spring_security_practice.repository.RoleRepository;
+import com.example.spring_security_practice.security.common.metadataSource.UrlFilterInvocationSecurityMetadataSource;
 import com.example.spring_security_practice.service.AccountService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,7 @@ public class AccountServiceImpl implements AccountService {
         else
             dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 
-        // upate
+        // update
         Account account = modelMapper.map(dto, Account.class);
         account.setId(id);
         account.setUserRoles(roles);
@@ -84,11 +85,6 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public Account getUser(Long id) {
         return accountRepository.findById(id).get();
-    }
-
-    @Transactional
-    public void deleteUser(Long id) {
-        accountRepository.deleteById(id);
     }
 
 }

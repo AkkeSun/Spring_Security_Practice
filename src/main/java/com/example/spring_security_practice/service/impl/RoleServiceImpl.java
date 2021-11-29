@@ -26,11 +26,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Transactional
-    public Role findByRoleName(String name) {
-        return roleRepository.findByRoleName(name);
-    }
-
-    @Transactional
     public List<Role> getRoles() {
         return roleRepository.findAll();
     }
@@ -50,10 +45,5 @@ public class RoleServiceImpl implements RoleService {
         Role role = modelMapper.map(roledto, Role.class);
         role.setId(id);
         roleRepository.save(role);
-    }
-
-    @Transactional
-    public void deleteRole(Long id) {
-        roleRepository.deleteById(id);
     }
 }

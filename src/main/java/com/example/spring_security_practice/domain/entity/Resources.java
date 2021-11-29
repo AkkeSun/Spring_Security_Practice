@@ -33,7 +33,7 @@ public class Resources implements Serializable {
 
     @JsonBackReference // 순환참조 방지 (부모엔티티에 붙이기)
     @ManyToMany
-    @JoinTable(name = "role_resources", joinColumns = {
-            @JoinColumn(name = "resource_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
+    @JoinTable(name = "role_Resources", joinColumns = {
+            @JoinColumn(name = "resourceId") }, inverseJoinColumns = { @JoinColumn(name = "roleId") })
     private Set<Role> roleSet = new HashSet<>();
 }

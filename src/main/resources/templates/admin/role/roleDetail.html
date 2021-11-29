@@ -28,27 +28,6 @@
         });
     }
 
-
-    function deleteFunc() {
-
-        let csrfHeader = $("#_csrf_header").attr('content');
-        let csrfToken = $("#_csrf").attr('content');
-
-        let callback =
-            $.ajax({
-                type       : "delete",
-                url        : "/api/admin/roles/"+$("#id").val(),
-                dataType   : "json",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Content-type", "application/json");
-                    xhr.setRequestHeader(csrfHeader, csrfToken)
-                }
-            });
-        callback.done ( () => {
-            location.href = "/admin/roles";
-        });
-    }
-
 </script>
 
 <body>
@@ -84,7 +63,6 @@
 
             <input type="hidden" th:field="*{id}" />
             <input type="button" class="btn btn-dark btn-lg" th:onclick="updateFunc()" value="수정"/>
-            <input type="button" class="btn btn-dark btn-lg" th:onclick="deleteFunc()" value="삭제"/>
             <a class="btn btn-dark btn-lg" th:href="@{/admin/roles}">목록</a>
         </form>
 

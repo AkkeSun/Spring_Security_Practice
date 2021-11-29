@@ -16,6 +16,4 @@ public interface RoleService {
 
     void updateRole(Long id, RoleDto roledto);
 
-    void deleteRole(Long id);
-
 }

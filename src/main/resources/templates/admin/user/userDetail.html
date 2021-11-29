@@ -11,7 +11,7 @@
 
     let data = {"username":$("#username").val(), "password":$("#password").val(),
                 "email":$("#email").val(), "age":$("#age").val(),
-                "role":$("#email").val()};
+                "role":$("#role").val()};
     let csrfHeader = $("#_csrf_header").attr('content');
     let csrfToken = $("#_csrf").attr('content');
 
@@ -31,26 +31,6 @@
     });
   }
 
-
-  function deleteFunc() {
-
-    let csrfHeader = $("#_csrf_header").attr('content');
-    let csrfToken = $("#_csrf").attr('content');
-
-    let callback =
-            $.ajax({
-              type       : "delete",
-              url        : "/api/admin/accounts/"+$("#id").val(),
-              dataType   : "json",
-              beforeSend: function (xhr) {
-                xhr.setRequestHeader("Content-type", "application/json");
-                xhr.setRequestHeader(csrfHeader, csrfToken)
-              }
-            });
-    callback.done ( () => {
-      location.href = "/admin/accounts";
-    });
-  }
 </script>
 
 <div th:replace="admin/common/top::header"></div>
@@ -101,7 +81,6 @@
       <div class="form-group">
         <div class="col-sm-offset-1 col-sm-10">
           <button type="button" th:onclick="updateFunc()" class="btn btn-dark btn-lg">수정</button>
-          <button type="button" th:onclick="deleteFunc()" class="btn btn-dark btn-lg">삭제</button>
           <a class="btn btn-dark btn-lg" th:href="@{/admin/accounts}">목록 </a>
         </div>
       </div>

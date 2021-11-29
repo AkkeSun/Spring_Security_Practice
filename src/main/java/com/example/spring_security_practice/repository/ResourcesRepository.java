@@ -9,7 +9,12 @@ import java.util.List;
 
 public interface ResourcesRepository extends JpaRepository<Resources, Long> {
 
+
+    @EntityGraph(value = "getRole")
+    @Query("select r from Resources r order by r.orderNum")
+    List<Resources> findAllResources();
+
     @EntityGraph(value = "getRole")
     @Query("select r from Resources r where r.resourceType = 'url' order by r.orderNum desc")
-    List<Resources> findAllResources();
+    List<Resources> findAllUrlResources();
 }

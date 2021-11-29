@@ -3,13 +3,10 @@ package com.example.spring_security_practice.controller.admin;
 import com.example.spring_security_practice.domain.dto.AccountDto;
 import com.example.spring_security_practice.domain.dto.ResourcesDto;
 import com.example.spring_security_practice.domain.dto.RoleDto;
-import com.example.spring_security_practice.domain.entity.Account;
-import com.example.spring_security_practice.domain.entity.Role;
 import com.example.spring_security_practice.service.AccountService;
 import com.example.spring_security_practice.service.ResourceService;
 import com.example.spring_security_practice.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,12 +33,6 @@ public class AdminRestController {
         roleService.updateRole(id, roleDto);
     }
 
-    @DeleteMapping("/roles/{id}")
-    public boolean RoleDelete(@PathVariable("id") Long id)  {
-        roleService.deleteRole(id);
-        return true;
-    }
-
     @PostMapping("/accounts")
     public boolean createAccount(@RequestBody AccountDto accountDto)  {
         accountService.createUser(accountDto, true);
@@ -51,12 +42,6 @@ public class AdminRestController {
     @PutMapping("/accounts/{id}")
     public boolean accountUpdate(@PathVariable("id") Long id, @RequestBody AccountDto accountDto)  {
         accountService.updateUser(id, accountDto);
-        return true;
-    }
-
-    @DeleteMapping("/accounts/{id}")
-    public boolean accountDelete(@PathVariable("id") Long id)  {
-        accountService.deleteUser(id);
         return true;
     }
 
@@ -70,12 +55,6 @@ public class AdminRestController {
     @PutMapping("/resources/{id}")
     public boolean accountResources(@PathVariable("id") Long id, @RequestBody ResourcesDto dto)  {
         resourceService.updateResources(id, dto);
-        return true;
-    }
-
-    @DeleteMapping("/resources/{id}")
-    public boolean accountResources(@PathVariable("id") Long id)  {
-        resourceService.deleteResource(id);
         return true;
     }
 }

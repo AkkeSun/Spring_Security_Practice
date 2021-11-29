@@ -1,5 +1,6 @@
 package com.example.spring_security_practice.security.common.metadataSource;
 
+import com.example.spring_security_practice.security.common.service.SecurityResourceService;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
@@ -14,9 +15,11 @@ import java.util.*;
 public class UrlFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
     private LinkedHashMap<RequestMatcher, List<ConfigAttribute>> requestMap;
+    private SecurityResourceService securityResourceService;
 
-    public UrlFilterInvocationSecurityMetadataSource(LinkedHashMap<RequestMatcher, List<ConfigAttribute>> requestMap) {
+    public UrlFilterInvocationSecurityMetadataSource(LinkedHashMap<RequestMatcher, List<ConfigAttribute>> requestMap, SecurityResourceService securityResourceService) {
         this.requestMap = requestMap;
+        this.securityResourceService = securityResourceService;
     }
 
     /**
@@ -65,4 +68,23 @@ public class UrlFilterInvocationSecurityMetadataSource implements FilterInvocati
     public boolean supports(Class<?> aClass) {
         return FilterInvocation.class.isAssignableFrom(aClass);
     }
+
+
+    /**
+     * 자원이 새로 생성될 때 실시간 데이터 업데이트
+     */
+    public void reload(){
+        LinkedHashMap<RequestMatcher, List<ConfigAttribute>> reloadMap = securityResourceService.getResourceList();
+        Iterator<Map.Entry<RequestMatcher, List<ConfigAttribute>>> iterator = reloadMap.entrySet().iterator();
+        
+        // 이전 인가정보 지우기
+        requestMap.clear();
+
+        // 인가정보 다시 넣기
+        while(iterator.hasNext()){
+            Map.Entry<RequestMatcher, List<ConfigAttribute>> entry = iterator.next();
+            requestMap.put(entry.getKey(), entry.getValue());
+        }
+    }
+
 }
