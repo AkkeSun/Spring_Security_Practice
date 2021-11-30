@@ -5,6 +5,7 @@ import com.example.spring_security_practice.security.FormLogin.handler.CustomAut
 import com.example.spring_security_practice.security.FormLogin.handler.CustomAuthenticationSuccessHandler;
 import com.example.spring_security_practice.security.FormLogin.provider.CustomAuthenticationProvider;
 import com.example.spring_security_practice.security.common.factory.UrlResourcesMapFactoryBean;
+import com.example.spring_security_practice.security.common.filter.PermitAllFilter;
 import com.example.spring_security_practice.security.common.metadataSource.UrlFilterInvocationSecurityMetadataSource;
 import com.example.spring_security_practice.security.common.service.SecurityResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,10 +62,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //============ 인가 ============
         http
                 .authorizeRequests()
+                /*
                 .antMatchers("/", "/users", "/login*").permitAll() // login error 처리 추가 -> login*
                 .antMatchers("/myPage").hasRole("USER")
                 .antMatchers("/message").hasRole("MANAGER")
                 .antMatchers("/admin").hasRole("ADMIN")
+                 */
                 .anyRequest().authenticated()
         ;
 
@@ -129,14 +132,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     //======== DB를 통해 인가처리를 하기 위한 Filter =========
+    //filterSecurityInterceptor에서 PermitAllFilter로 업그레이드
+    private String[] permitAllResources = {"/", "/login", "/users/**", "/login*" };
     @Bean
-    public FilterSecurityInterceptor customFilterSecurityInterceptor() throws Exception {
+    public PermitAllFilter customFilterSecurityInterceptor() throws Exception {
 
-        FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
-        filterSecurityInterceptor.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource()); // 시큐리티 인가 정보
-        filterSecurityInterceptor.setAccessDecisionManager(affirmativeBased()); // 접근 결정 매니저
-        filterSecurityInterceptor.setAuthenticationManager(authenticationManager()); // 인증 매니저
-        return filterSecurityInterceptor;
+        PermitAllFilter permitAllFilter = new PermitAllFilter();
+        permitAllFilter.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource()); // 시큐리티 인가 정보
+        permitAllFilter.setAccessDecisionManager(affirmativeBased()); // 접근 결정 매니저
+        permitAllFilter.setAuthenticationManager(authenticationManager()); // 인증 매니저
+        return permitAllFilter;
     }
 
 
