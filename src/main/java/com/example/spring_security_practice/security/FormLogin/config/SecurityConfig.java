@@ -15,7 +15,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.access.vote.RoleHierarchyVoter;
 import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -31,6 +34,7 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -139,11 +143,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         PermitAllFilter permitAllFilter = new PermitAllFilter();
         permitAllFilter.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource()); // 시큐리티 인가 정보
-        permitAllFilter.setAccessDecisionManager(affirmativeBased()); // 접근 결정 매니저
+        permitAllFilter.setAccessDecisionManager(affirmativeBased());      // 접근 결정 매니저
         permitAllFilter.setAuthenticationManager(authenticationManager()); // 인증 매니저
         return permitAllFilter;
     }
-
 
     @Bean
     public UrlFilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource() throws Exception {
@@ -154,16 +157,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return  uriResourcesMapFactoryBean;
     }
 
-
-    // 접근결정 매니저 Bean 등록
+    // 접근결정 매니저 Bean
     @Bean
     public AccessDecisionManager affirmativeBased(){
         AffirmativeBased affirmativeBased = new AffirmativeBased(getAccessDecis());
         return affirmativeBased;
     }
 
+    // 인가 심사
     private List<AccessDecisionVoter<?>> getAccessDecis(){
-        return Arrays.asList(new RoleVoter());
+
+        List<AccessDecisionVoter<? extends Object>> accessDecisionVoters = new ArrayList<>();
+        accessDecisionVoters.add(roleVoter());
+        return accessDecisionVoters;
+    }
+
+    @Bean
+    public AccessDecisionVoter<? extends Object> roleVoter() {
+        RoleHierarchyVoter roleHierarchyVoter = new RoleHierarchyVoter(roleHierarchy());
+        return roleHierarchyVoter;
+    }
+
+    @Bean
+    public RoleHierarchyImpl roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        return roleHierarchy;
     }
 
 }

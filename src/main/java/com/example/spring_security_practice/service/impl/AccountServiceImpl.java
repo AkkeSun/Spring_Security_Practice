@@ -38,12 +38,10 @@ public class AccountServiceImpl implements AccountService {
         // role setting
         Set<Role> roles = new HashSet<>();
 
-        if(isAdmin) {
-         List<Role> roleList = roleRepository.getRolesForAccount(dto.getRole());
-         roleList.forEach( role -> roles.add(role) );
-        } else {
+        if(isAdmin)
+            roles.add(roleRepository.findByRoleName(dto.getRole()));
+        else
             roles.add(roleRepository.findByRoleName("ROLE_USER"));
-        }
 
         Account account = modelMapper.map(dto, Account.class);
         account.setPassword(passwordEncoder.encode(dto.getPassword()));
@@ -61,8 +59,7 @@ public class AccountServiceImpl implements AccountService {
 
         // role setting
         Set<Role> roles = new HashSet<>();
-        List<Role> roleList = roleRepository.getRolesForAccount(dto.getRole());
-        roleList.forEach( role -> roles.add(role) );
+        roles.add(roleRepository.findByRoleName(dto.getRole()));
 
         // password setting
         if(dto.getPassword().equals(""))

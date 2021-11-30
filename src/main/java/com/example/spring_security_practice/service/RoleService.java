@@ -16,4 +16,6 @@ public interface RoleService {
 
     void updateRole(Long id, RoleDto roledto);
 
+    String findAllHierarchy();
+
 }
