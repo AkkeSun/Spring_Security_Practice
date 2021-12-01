@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 /**
  * UserDetailsService
- * DB에 저장된 유저 정보를 가져오는 클래스
+ * DB에 저장된 유저 정보를 가져오는 서비스
  */
 @Service
 public class CustomUserDetailService implements UserDetailsService {
@@ -27,7 +27,6 @@ public class CustomUserDetailService implements UserDetailsService {
     @Autowired
     AccountRepository repository;
 
-    @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         
@@ -38,9 +37,10 @@ public class CustomUserDetailService implements UserDetailsService {
         return new User(account.getUsername(), account.getPassword(), authorities(account.getUserRoles()));
     }
 
+    // Role 설정
     private Collection<? extends GrantedAuthority> authorities(Set<Role> roles) {
         return roles.stream()
-                .map(r -> new SimpleGrantedAuthority( r.getRoleName()))
+                .map(r -> new SimpleGrantedAuthority(r.getRoleName()))
                 .collect(Collectors.toSet());
     }
 }

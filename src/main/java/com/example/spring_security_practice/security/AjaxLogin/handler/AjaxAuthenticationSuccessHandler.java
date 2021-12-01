@@ -1,11 +1,9 @@
 package com.example.spring_security_practice.security.AjaxLogin.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,11 +21,11 @@ public class AjaxAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
         // 로그인에 성공한 객채 가져오기
-        UserDetails account = (UserDetails) authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
 
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 
-        objectMapper.writeValue(response.getWriter(), account);
+        objectMapper.writeValue(response.getWriter(), principal);
     }
 }

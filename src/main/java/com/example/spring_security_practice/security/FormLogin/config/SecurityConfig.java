@@ -8,6 +8,7 @@ import com.example.spring_security_practice.security.common.factory.UrlResources
 import com.example.spring_security_practice.security.common.filter.PermitAllFilter;
 import com.example.spring_security_practice.security.common.metadataSource.UrlFilterInvocationSecurityMetadataSource;
 import com.example.spring_security_practice.security.common.service.SecurityResourceService;
+import com.example.spring_security_practice.security.common.voter.IpAddressVoter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -99,11 +100,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-
-
-
-
-
     @Bean
     public PasswordEncoder passwordEncoder(){
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -133,8 +129,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-
-
     //======== DB를 통해 인가처리를 하기 위한 Filter =========
     //filterSecurityInterceptor에서 PermitAllFilter로 업그레이드
     private String[] permitAllResources = {"/", "/login", "/users/**", "/login*" };
@@ -157,7 +151,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return  uriResourcesMapFactoryBean;
     }
 
-    // 접근결정 매니저 Bean
+    // 접근결정 매니저
     @Bean
     public AccessDecisionManager affirmativeBased(){
         AffirmativeBased affirmativeBased = new AffirmativeBased(getAccessDecis());
@@ -165,13 +159,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     // 인가 심사
-    private List<AccessDecisionVoter<?>> getAccessDecis(){
-
+    private List <AccessDecisionVoter<?>> getAccessDecis(){
         List<AccessDecisionVoter<? extends Object>> accessDecisionVoters = new ArrayList<>();
-        accessDecisionVoters.add(roleVoter());
+        accessDecisionVoters.add(new IpAddressVoter()); // ip 심사 (이게 가장 먼저)
+        accessDecisionVoters.add(roleVoter());          // Role 계층권한 적용
         return accessDecisionVoters;
     }
 
+    // ---- Role 계층 권한 적용 ----
     @Bean
     public AccessDecisionVoter<? extends Object> roleVoter() {
         RoleHierarchyVoter roleHierarchyVoter = new RoleHierarchyVoter(roleHierarchy());

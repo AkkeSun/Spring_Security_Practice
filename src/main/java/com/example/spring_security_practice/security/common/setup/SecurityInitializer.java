@@ -1,4 +1,4 @@
-package com.example.spring_security_practice.security.common.init;
+package com.example.spring_security_practice.security.common.setup;
 
 import com.example.spring_security_practice.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +7,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.stereotype.Component;
 
-/**
- * 시큐리티 구동시 초기화 클래스
- */
+
 @Component
 public class SecurityInitializer implements ApplicationRunner {
 

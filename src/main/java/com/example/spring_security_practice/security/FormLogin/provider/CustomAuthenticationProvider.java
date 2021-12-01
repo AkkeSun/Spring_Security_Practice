@@ -9,11 +9,13 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 
 /**
  * AuthenticationProvider
@@ -48,10 +50,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if(secretKey == null || !"secret".equals(secretKey))
             throw new InsufficientAuthenticationException("Invalid SecretKey");
 
-        // 인승 성공하면 토큰 생성 (SpringBoot가 기본 제공하는 토큰임)
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        return authenticationToken;
+        // 인승 성공하면 토큰 생성
+        return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
     }
 
     @Override

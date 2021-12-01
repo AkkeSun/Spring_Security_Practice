@@ -11,7 +11,7 @@ import java.util.Collection;
  * UsernamePasswordAuthenticationToken.class 을 참조(복사)해서 생성하기
  */
 public class AjaxAuthenticationToken extends AbstractAuthenticationToken {
-    
+
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
     private final Object principal;
     private Object credentials;
@@ -32,14 +32,7 @@ public class AjaxAuthenticationToken extends AbstractAuthenticationToken {
         super.setAuthenticated(true);
     }
 
-    public Object getCredentials() {
-        return this.credentials;
-    }
-
-    public Object getPrincipal() {
-        return this.principal;
-    }
-
+    // 인증 유무 처리 함수
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
         if (isAuthenticated) {
             throw new IllegalArgumentException("Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead");
@@ -48,8 +41,15 @@ public class AjaxAuthenticationToken extends AbstractAuthenticationToken {
         }
     }
 
-    public void eraseCredentials() {
-        super.eraseCredentials();
-        this.credentials = null;
+
+    @Override
+    public Object getCredentials() {
+        return this.credentials;
     }
+
+    @Override
+    public Object getPrincipal() {
+        return this.principal;
+    }
+
 }

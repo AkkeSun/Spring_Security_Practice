@@ -17,6 +17,7 @@
                 <th scope="col">리소스명</th>
                 <th scope="col">리소스타입</th>
                 <th scope="col">HttpMethod</th>
+                <th scope="col">권한</th>
                 <th scope="col">순서</th>
             </tr>
             </thead>
@@ -28,6 +29,7 @@
                 </td>
                 <td style="text-align: left;" th:text="${res.resourceType}"></td>
                 <td style="text-align: left;" th:text="${res.httpMethod}"></td>
+                <td style="text-align: left;" th:text="${res.roleSet[0].roleName}"></td>
                 <td style="text-align: left;" th:text="${res.orderNum}"></td>
             </tr>
             </tbody>

@@ -1,6 +1,5 @@
 package com.example.spring_security_practice.security.AjaxLogin.provier;
 
-import com.example.spring_security_practice.security.common.service.AccountContext;
 import com.example.spring_security_practice.security.AjaxLogin.token.AjaxAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -29,7 +28,7 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
     @Transactional
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        // 로그인 데이터가 담긴 authentication 객채
+        // 유저가 입력한 로그인 데이터가 담긴 authentication 객채
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
 
@@ -37,13 +36,11 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         // DB데이터와 로그인 데이터가 일치한지 검증
-        if(!passwordEncoder.matches(password, userDetails.getPassword()))
+        if(!(passwordEncoder.matches(password, userDetails.getPassword())))
             throw new BadCredentialsException("Invalid Username or Password");
 
-        // 인승 성공하면 토큰 생성
-        AjaxAuthenticationToken authenticationToken =
-                new AjaxAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        return authenticationToken;
+        // 인승 성공하면 토큰 리턴
+        return new AjaxAuthenticationToken(username, password, userDetails.getAuthorities());
     }
 
     @Override

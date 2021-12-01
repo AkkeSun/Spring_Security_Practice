@@ -17,4 +17,5 @@ public interface ResourcesRepository extends JpaRepository<Resources, Long> {
     @Query("select r from Resources r where r.resourceType = 'url' order by r.orderNum desc")
     List<Resources> findAllUrlResources();
 
+    Resources findByResourceNameAndHttpMethod(String resourceName, String httpMethod);
 }
