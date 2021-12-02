@@ -5,16 +5,14 @@ import com.example.spring_security_practice.domain.entity.Resources;
 import com.example.spring_security_practice.domain.entity.Role;
 import com.example.spring_security_practice.repository.ResourcesRepository;
 import com.example.spring_security_practice.repository.RoleRepository;
-import com.example.spring_security_practice.security.common.metadataSource.UrlFilterInvocationSecurityMetadataSource;
+import com.example.spring_security_practice.metadataSource.UrlMetadataSource;
 import com.example.spring_security_practice.service.ResourceService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ResourceServiceImpl implements ResourceService {
@@ -29,7 +27,7 @@ public class ResourceServiceImpl implements ResourceService {
     private ModelMapper modelMapper;
 
     @Autowired
-    private UrlFilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource;
+    private UrlMetadataSource urlFilterInvocationSecurityMetadataSource;
 
     @Transactional
     public void createResource(ResourcesDto dto) {
@@ -75,4 +73,5 @@ public class ResourceServiceImpl implements ResourceService {
         // 실시간 업데이트
         urlFilterInvocationSecurityMetadataSource.reload();
     }
+
 }
