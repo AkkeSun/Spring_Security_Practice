@@ -15,6 +15,7 @@ import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,7 +24,8 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 
 @Configuration
 @EnableWebSecurity
-@Order(1)
+@Order(0)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -105,10 +107,10 @@ public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // ================== DB 인가처리 Filter ================
     // permitAllFilter 를 사용하지 않는 경우 FilterSecurityInterceptor 를 사용한다
-    private String[] permitAllResources = {"/", "/login", "/users/**", "/login*" };
+    private String[] permitAllResources = {"/", "/login", "/users/**", "/login*"};
     @Bean
     public PermitAllFilter customFilterSecurityInterceptor() throws Exception {
-        PermitAllFilter permitAllFilter = new PermitAllFilter();
+        PermitAllFilter permitAllFilter = new PermitAllFilter(permitAllResources);
         permitAllFilter.setSecurityMetadataSource(urlMetadataSource);      // 시큐리티 인가 정보
         permitAllFilter.setAccessDecisionManager(accessDecisionManager);   // 접근 결정 매니저
         permitAllFilter.setAuthenticationManager(authenticationManager()); // 인증 매니저
