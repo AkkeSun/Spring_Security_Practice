@@ -6,20 +6,12 @@ import com.example.spring_security_practice.handler.form.FormAuthenticationSucce
 import com.example.spring_security_practice.provier.FormAuthenticationProvider;
 import com.example.spring_security_practice.filter.PermitAllFilter;
 import com.example.spring_security_practice.metadataSource.UrlMetadataSource;
-import com.example.spring_security_practice.voter.IpAddressVoter;
-import com.example.spring_security_practice.service.AccessIpService;
-import com.example.spring_security_practice.service.security.SecurityResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.access.AccessDecisionManager;
-import org.springframework.security.access.AccessDecisionVoter;
-import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
-import org.springframework.security.access.vote.AffirmativeBased;
-import org.springframework.security.access.vote.RoleHierarchyVoter;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,16 +19,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.util.matcher.RequestMatcher;
-
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -131,6 +114,4 @@ public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
         permitAllFilter.setAuthenticationManager(authenticationManager()); // 인증 매니저
         return permitAllFilter;
     }
-
-
 }
