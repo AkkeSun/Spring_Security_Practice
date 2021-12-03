@@ -20,7 +20,8 @@ public class FormAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
-        String deniedURL = errorPage + "?exception=" + e.getMessage();
+        // String deniedURL = errorPage + "?exception=" + e.getMessage(); // 접근이 거부되었습니다
+        String deniedURL = errorPage + "?exception=" + "Access Denied";
         httpServletResponse.sendRedirect(deniedURL);
     }
 }

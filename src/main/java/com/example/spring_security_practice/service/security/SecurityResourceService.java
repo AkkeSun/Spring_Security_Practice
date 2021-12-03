@@ -20,10 +20,10 @@ public class SecurityResourceService {
     @Autowired
     private ResourcesRepository resourcesRepository;
 
-    // ========================= Resource 최종 Return ==========================
+    // ========================= URL Resource 최종 Return ==========================
     // LinkedHashMap ( path : roleList )
     @Transactional
-    public LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getResourceList() {
+    public LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getUrlResourceList() {
 
         LinkedHashMap<RequestMatcher, List<ConfigAttribute>> result = new LinkedHashMap<>();
         List<Resources> resourceList = resourcesRepository.findAllUrlResources();
@@ -32,11 +32,30 @@ public class SecurityResourceService {
             List<ConfigAttribute> roleList = new ArrayList<>();
             resource.getRoleSet().forEach(role -> {
                 roleList.add(new SecurityConfig(role.getRoleName()));
-                result.put(new AntPathRequestMatcher(resource.getResourceName()), roleList);
             });
+            result.put(new AntPathRequestMatcher(resource.getResourceName()), roleList);
         });
 
         return result;
     }
-    // =========================================================================
+
+
+    // ========================= Method Resource 최종 Return ==========================
+    // LinkedHashMap ( path : roleList )
+    @Transactional
+    public LinkedHashMap<String, List<ConfigAttribute>> getMethodResourceList() {
+
+        LinkedHashMap<String, List<ConfigAttribute>> result = new LinkedHashMap<>();
+        List<Resources> resourceList = resourcesRepository.findAllMethodResources();
+
+        resourceList.forEach(resource -> {
+            List<ConfigAttribute> roleList = new ArrayList<>();
+            resource.getRoleSet().forEach(role -> {
+                roleList.add(new SecurityConfig(role.getRoleName()));
+            });
+            result.put(resource.getResourceName(), roleList);
+        });
+
+        return result;
+    }
 }

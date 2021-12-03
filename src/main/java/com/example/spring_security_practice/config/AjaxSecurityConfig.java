@@ -6,7 +6,6 @@ import com.example.spring_security_practice.handler.ajax.AjaxAuthenticationFailu
 import com.example.spring_security_practice.handler.ajax.AjaxAuthenticationSuccessHandler;
 import com.example.spring_security_practice.AuthenticationEntryPoint.AjaxLoginAuthenticationEntryPoint;
 import com.example.spring_security_practice.filter.AjaxLoginProcessingFilter;
-import com.example.spring_security_practice.metadataSource.UrlMetadataSource;
 import com.example.spring_security_practice.provier.AjaxAuthenticationProvider;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
-import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

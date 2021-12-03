@@ -1,6 +1,7 @@
 package com.example.spring_security_practice.config;
 
-import com.example.spring_security_practice.metadataSource.UrlMetadataSource;
+import com.example.spring_security_practice.factory.MethodResourcesMapFactoryBean;
+import com.example.spring_security_practice.metaDataSource.UrlMetadataSource;
 import com.example.spring_security_practice.service.AccessIpService;
 import com.example.spring_security_practice.service.security.SecurityResourceService;
 import com.example.spring_security_practice.voter.IpAddressVoter;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.access.method.MapBasedMethodSecurityMetadataSource;
 import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.access.vote.RoleHierarchyVoter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -55,11 +57,30 @@ public class WebConfig {
 
 
 
-    // =========================== MetaDataSource ===============================
+    // =========================== Url MetaData Source ===============================
     @Bean
     public UrlMetadataSource urlMetadataSource() throws Exception {
         return new UrlMetadataSource(securityResourceService);
     }
+
+
+
+
+    // =========================== Method MetaData Source ===============================
+    @Bean
+    public MethodResourcesMapFactoryBean methodResourcesMapFactoryBean(){
+        MethodResourcesMapFactoryBean factoryBean = new MethodResourcesMapFactoryBean(securityResourceService);
+        return factoryBean;
+    }
+
+    @Bean
+    // spring 기본제공
+    public MapBasedMethodSecurityMetadataSource mapBasedMethodSecurityMetadataSource(){
+        return new MapBasedMethodSecurityMetadataSource(methodResourcesMapFactoryBean().getObject());
+    }
+
+
+
 
 
     // =============================인가처리 필터 접근결정 매니저 ==============================

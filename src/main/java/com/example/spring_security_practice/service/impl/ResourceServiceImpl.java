@@ -5,7 +5,7 @@ import com.example.spring_security_practice.domain.entity.Resources;
 import com.example.spring_security_practice.domain.entity.Role;
 import com.example.spring_security_practice.repository.ResourcesRepository;
 import com.example.spring_security_practice.repository.RoleRepository;
-import com.example.spring_security_practice.metadataSource.UrlMetadataSource;
+import com.example.spring_security_practice.metaDataSource.UrlMetadataSource;
 import com.example.spring_security_practice.service.ResourceService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

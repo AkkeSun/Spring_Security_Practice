@@ -22,7 +22,7 @@ public class UrlResourcesMapFactoryBean implements FactoryBean<LinkedHashMap<Req
     }
 
     private void init() {
-        resourceMap = resourceService.getResourceList();
+        resourceMap = resourceService.getUrlResourceList();
     }
 
     @Override

@@ -5,7 +5,7 @@ import com.example.spring_security_practice.handler.form.FormAuthenticationFailu
 import com.example.spring_security_practice.handler.form.FormAuthenticationSuccessHandler;
 import com.example.spring_security_practice.provier.FormAuthenticationProvider;
 import com.example.spring_security_practice.filter.PermitAllFilter;
-import com.example.spring_security_practice.metadataSource.UrlMetadataSource;
+import com.example.spring_security_practice.metaDataSource.UrlMetadataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +15,6 @@ import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,7 +24,6 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 @Configuration
 @EnableWebSecurity
 @Order(0)
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired

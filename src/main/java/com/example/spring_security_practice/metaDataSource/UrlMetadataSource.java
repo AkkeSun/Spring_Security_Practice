@@ -1,4 +1,4 @@
-package com.example.spring_security_practice.metadataSource;
+package com.example.spring_security_practice.metaDataSource;
 
 import com.example.spring_security_practice.factory.UrlResourcesMapFactoryBean;
 import com.example.spring_security_practice.service.security.SecurityResourceService;
@@ -45,7 +45,7 @@ public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource
 
     // =============== 자원이 새로 생성될 때 실시간 데이터 업데이트 =================
     public void reload(){
-        LinkedHashMap<RequestMatcher, List<ConfigAttribute>> reloadMap = securityResourceService.getResourceList();
+        LinkedHashMap<RequestMatcher, List<ConfigAttribute>> reloadMap = securityResourceService.getUrlResourceList();
         Iterator<Map.Entry<RequestMatcher, List<ConfigAttribute>>> iterator = reloadMap.entrySet().iterator();
         
         // 이전 인가정보 지우기
