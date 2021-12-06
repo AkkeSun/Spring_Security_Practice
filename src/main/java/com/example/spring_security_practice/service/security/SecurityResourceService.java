@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+/**
+ * factory bean 생성을 위한 service
+ */
 @Service
 public class SecurityResourceService {
 
@@ -55,7 +58,8 @@ public class SecurityResourceService {
             });
             result.put(resource.getResourceName(), roleList);
         });
-
         return result;
     }
+
+
 }

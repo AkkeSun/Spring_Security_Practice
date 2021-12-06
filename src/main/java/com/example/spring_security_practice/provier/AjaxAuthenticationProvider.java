@@ -41,8 +41,8 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
         if(!(passwordEncoder.matches(password, userDetails.getPassword())))
             throw new BadCredentialsException("Invalid Username or Password");
 
-        // 인승 성공하면 토큰 리턴
-        return new AjaxAuthenticationToken(username, password, userDetails.getAuthorities());
+        // 인승 성공하면 토큰 생성 (UserDetail, password, 권한정보)
+        return new AjaxAuthenticationToken(userDetails, password, userDetails.getAuthorities());
     }
 
     @Override

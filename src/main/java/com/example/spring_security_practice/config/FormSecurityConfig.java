@@ -89,9 +89,7 @@ public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(successHandler)
                 .failureHandler(failureHandler)
                 .permitAll()
-                .and()
         ;
-
 
     }
 
@@ -104,12 +102,12 @@ public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     // ================== DB 인가처리 Filter ================
-    // permitAllFilter 를 사용하지 않는 경우 FilterSecurityInterceptor 를 사용한다
+    // permitAllFilter 를 사용하지 않는 경우 FilterSecurityInterceptor 를 생성해서 사용한다
     private String[] permitAllResources = {"/", "/login", "/users/**", "/login*"};
     @Bean
     public PermitAllFilter customFilterSecurityInterceptor() throws Exception {
         PermitAllFilter permitAllFilter = new PermitAllFilter(permitAllResources);
-        permitAllFilter.setSecurityMetadataSource(urlMetadataSource);      // 시큐리티 인가 정보
+        permitAllFilter.setSecurityMetadataSource(urlMetadataSource);      // url 시큐리티 인가 정보
         permitAllFilter.setAccessDecisionManager(accessDecisionManager);   // 접근 결정 매니저
         permitAllFilter.setAuthenticationManager(authenticationManager()); // 인증 매니저
         return permitAllFilter;

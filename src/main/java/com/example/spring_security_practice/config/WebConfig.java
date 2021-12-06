@@ -1,6 +1,7 @@
 package com.example.spring_security_practice.config;
 
 import com.example.spring_security_practice.factory.MethodResourcesMapFactoryBean;
+import com.example.spring_security_practice.factory.UrlResourcesMapFactoryBean;
 import com.example.spring_security_practice.metaDataSource.UrlMetadataSource;
 import com.example.spring_security_practice.service.AccessIpService;
 import com.example.spring_security_practice.service.security.SecurityResourceService;
@@ -29,6 +30,7 @@ public class WebConfig {
 
     @Autowired
     private SecurityResourceService securityResourceService;
+
     @Autowired
     private AccessIpService accessIpService;
 
@@ -42,39 +44,40 @@ public class WebConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+
     // ============================ Role 계층권한 적용 ================================
-    //RoleHierarchy 에 들어가는 권한 정보는 SecurityInitializer 에서 입력된다
+    // RoleHierarchy 에 들어가는 권한 정보는 SecurityInitializer 에서 입력된다
     @Bean
     public RoleHierarchyImpl roleHierarchy() {
-        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        return roleHierarchy;
+        return  new RoleHierarchyImpl();
     }
     @Bean
     public AccessDecisionVoter<? extends Object> roleVoter() {
-        RoleHierarchyVoter roleHierarchyVoter = new RoleHierarchyVoter(roleHierarchy());
-        return roleHierarchyVoter;
+        return new RoleHierarchyVoter(roleHierarchy());
     }
 
 
 
-    // =========================== Url MetaData Source ===============================
+    // =========================== factory bean ===============================
     @Bean
-    public UrlMetadataSource urlMetadataSource() throws Exception {
-        return new UrlMetadataSource(securityResourceService);
+    public UrlResourcesMapFactoryBean urlResourcesMapFactoryBean(){
+        return new UrlResourcesMapFactoryBean(securityResourceService);
     }
 
-
-
-
-    // =========================== Method MetaData Source ===============================
     @Bean
     public MethodResourcesMapFactoryBean methodResourcesMapFactoryBean(){
-        MethodResourcesMapFactoryBean factoryBean = new MethodResourcesMapFactoryBean(securityResourceService);
-        return factoryBean;
+        return new MethodResourcesMapFactoryBean(securityResourceService);
     }
 
+
+
+    // =========================== MetaData Source ===============================
     @Bean
-    // spring 기본제공
+    public UrlMetadataSource urlMetadataSource() throws Exception {
+        return new UrlMetadataSource(urlResourcesMapFactoryBean().getObject());
+    }
+    
+    @Bean // 스프링 기본제공
     public MapBasedMethodSecurityMetadataSource mapBasedMethodSecurityMetadataSource(){
         return new MapBasedMethodSecurityMetadataSource(methodResourcesMapFactoryBean().getObject());
     }

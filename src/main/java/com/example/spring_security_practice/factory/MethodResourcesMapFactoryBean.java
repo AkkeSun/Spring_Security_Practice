@@ -16,16 +16,10 @@ public class MethodResourcesMapFactoryBean implements FactoryBean<LinkedHashMap<
         this.resourceService = resourceService;
     }
 
-
-    public void init() {
-       resourcesMap = resourceService.getMethodResourceList();
-    }
-
     @Override
     public LinkedHashMap<String, List<ConfigAttribute>> getObject() {
-        if (resourcesMap == null) {
-            init();
-        }
+        if (resourcesMap == null)
+            resourcesMap = resourceService.getMethodResourceList();
         return resourcesMap;
     }
 
@@ -33,8 +27,10 @@ public class MethodResourcesMapFactoryBean implements FactoryBean<LinkedHashMap<
     public Class<LinkedHashMap> getObjectType() {
         return LinkedHashMap.class;
     }
+
     @Override
     public boolean isSingleton() {
         return true;
     }
+
 }

@@ -20,4 +20,22 @@ public class AopMethodController {
     public String securedAuth(){
         return aopMethodService.methodSecure();
     }
+
+    @GetMapping("/method1")
+    public String preAuthorize(){
+        return aopMethodService.preAuthorize();
+    }
+
+    @GetMapping("/method2")
+    public String postAuthorize(){
+        return aopMethodService.postAuthorize();
+    }
+
+    @GetMapping("/method3")
+    public String secured(){
+        return aopMethodService.secured();
+    }
+
+
+
 }

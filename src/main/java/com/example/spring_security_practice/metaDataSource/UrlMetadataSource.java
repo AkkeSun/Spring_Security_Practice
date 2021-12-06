@@ -1,7 +1,7 @@
 package com.example.spring_security_practice.metaDataSource;
 
-import com.example.spring_security_practice.factory.UrlResourcesMapFactoryBean;
 import com.example.spring_security_practice.service.security.SecurityResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
@@ -15,12 +15,12 @@ import java.util.*;
  */
 public class UrlMetadataSource implements FilterInvocationSecurityMetadataSource {
 
+    @Autowired
     private SecurityResourceService securityResourceService;
     private LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceMap;
 
-    public UrlMetadataSource(SecurityResourceService service) throws Exception {
-        this.securityResourceService = service;
-        this.resourceMap = new UrlResourcesMapFactoryBean(service).getObject();
+    public UrlMetadataSource(LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceMap){
+        this.resourceMap = resourceMap;
     }
 
 

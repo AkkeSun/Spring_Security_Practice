@@ -49,8 +49,8 @@ public class FormAuthenticationProvider implements AuthenticationProvider {
         if(secretKey == null || !"secret".equals(secretKey))
             throw new InsufficientAuthenticationException("Invalid SecretKey");
 
-        // 인승 성공하면 토큰 생성
-        return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
+        // 인승 성공하면 토큰 생성 (UserDetail, password, 권한정보)
+        return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
     }
 
     @Override
