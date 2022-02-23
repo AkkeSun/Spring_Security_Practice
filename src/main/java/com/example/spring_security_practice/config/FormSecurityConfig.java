@@ -102,6 +102,7 @@ public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     // ================== DB 인가처리 Filter ================
+    // permitAllFilter : 인가처리를 받지 않을 get 요청을 셋팅할 수 있다
     // permitAllFilter 를 사용하지 않는 경우 FilterSecurityInterceptor 를 생성해서 사용한다
     private String[] permitAllResources = {"/", "/login", "/users/**", "/login*"};
     @Bean
